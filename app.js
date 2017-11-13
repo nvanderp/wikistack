@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 // OUR MODELS
 const models = require('./models');
-const Page = models.Page;
-const User = models.User;
+const pages = require('./routes/pages');
+const users = require('./routes/users');
+
 
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
@@ -22,6 +23,8 @@ app.use(bodyParser.json());
 
 var testRoutes = require('./routes/index.js');
 app.use('/', testRoutes);
+app.use('/pages', pages);
+app.use('/users', users);
 
 models.db.sync({force: true})
 .then(function() {
