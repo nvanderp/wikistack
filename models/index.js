@@ -18,6 +18,7 @@ const Page = db.define('page', {
     },
     status: {
       type: Sequelize.BOOLEAN, // true = open; false = closed
+      defaultValue: true
     },
     date: {
       type: Sequelize.DATE,
@@ -25,10 +26,25 @@ const Page = db.define('page', {
     },
     route: {
       type: Sequelize.STRING,
-      get() {
-        return '/pages/' + this.urlTitle;
-      }
     }
+}, {
+  hooks: {
+    beforeValidate: function(page) {
+      let url = '';
+      if(page.title.length > 1) {
+        url = page.title.replace(/[^a-zA-Z0-9]/g,'-').toLowerCase()
+      } else {
+        for(let i = 0; i < 10; i++) {
+          let rand = getRandomInt(97, 122)
+          url += String.fromCharCode(rand)
+        }
+      }
+      page.urlTitle = url;
+    },
+    afterValidate: function(page) {
+      page.setDataValue('route', '/pages/' + page.urlTitle);
+    }
+  }
 });
 
 const User = db.define('user', {
@@ -44,6 +60,12 @@ const User = db.define('user', {
         }
     }
 });
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
 module.exports = {
   Page: Page,
