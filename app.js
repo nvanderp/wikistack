@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
+// const router = express.Router();
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 // OUR MODELS
 const models = require('./models');
-const pages = require('./routes/pages');
-const users = require('./routes/users');
+
 
 
 app.set('view engine', 'html');
@@ -21,10 +21,16 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+
 var testRoutes = require('./routes/index.js');
-app.use('/', testRoutes);
+const pages = require('./routes/pages.js');
+const users = require('./routes/users.js');
+
 app.use('/pages', pages);
 app.use('/users', users);
+app.use('/', testRoutes);
+
+
 
 models.db.sync({force: true})
 .then(function() {
