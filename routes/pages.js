@@ -6,7 +6,7 @@ router.get('/', function(req, res) {
   //sendall
   page.findAll()
   .then(function(msg) {
-    res.send(msg)
+    res.render('index.html', {msg})
   })
   .catch(function(err) {
     if(err) throw err;
@@ -21,7 +21,7 @@ router.get('/add', function(req, res) {
 router.get('/:route', function(req, res) {
   page.findOne({urlTitle: req.params.route})
   .then(function(msg) {
-    res.render('wikipage', msg);
+    res.render('wikipage', {msg});
   })
 });
 

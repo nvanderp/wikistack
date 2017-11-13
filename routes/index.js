@@ -3,7 +3,7 @@ const router = express.Router();
 // const db = require('../db.js');
 
 router.get('/', function(req, res) {
-  res.send('Hello!');
+  res.redirect('/pages')
 });
 
 module.exports = router;

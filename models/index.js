@@ -61,6 +61,8 @@ const User = db.define('user', {
     }
 });
 
+Page.belongsTo(User, { as: 'author' });
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
